@@ -29,6 +29,7 @@ import UserListItem from '../UserAvatar/UserListItem';
 import { getSender } from '../../config/ChatLogics';
 import NotificationBadge from "react-notification-badge";
 import { Effect } from "react-notification-badge";
+import {useHistory} from 'react-router-dom';
 
 function SideDrawer() {
   const [search, setSearch] = useState('');
@@ -38,7 +39,7 @@ function SideDrawer() {
   const { user, setSelectedChat, chats, setChats, notification, setNotification } = ChatState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  
+  const history  = useHistory();
   const handleSearch = async () => {
     if (!search) {
       toast({
@@ -71,6 +72,21 @@ function SideDrawer() {
       });
     }
   };
+
+  const handleLogout = ()=>{
+    localStorage.removeItem('userInfo');
+    toast({
+      title: "Logout",
+      description: "Logged out Successfully!",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+    if(history){
+      history.push("/");
+    }
+  }
 
   const accessChat = async (userId) => {
     try {
@@ -156,7 +172,7 @@ function SideDrawer() {
                 <MenuItem>My Profile</MenuItem>
               </ProfileModal>
               <MenuDivider />
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
