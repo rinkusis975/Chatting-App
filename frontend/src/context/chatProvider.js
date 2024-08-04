@@ -14,10 +14,11 @@ const ChatProvider = ({ children }) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (userInfo) {
       setUser(userInfo);
-    } else {
-      history.push("/");
+    } else if (history && history.push) {
+      history.push("/"); // Ensure history is defined before using it
     }
   }, [history]);
+
   return (
     <ChatContext.Provider
       value={{
@@ -25,11 +26,10 @@ const ChatProvider = ({ children }) => {
         setUser,
         selectedChat,
         setSelectedChat,
-        chats, 
+        chats,
         notification,
         setNotification,
         setChats,
-
       }}
     >
       {children}
